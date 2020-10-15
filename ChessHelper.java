@@ -9,6 +9,11 @@ public class ChessHelper{
 		
 		String chessPiece = getPiece();
 		String piecePlacement = getPlacement(chessPiece);
+
+		if(chessPiece.equals("Knight")){
+			KnightHelper knightHelper = new KnightHelper();
+			knightHelper.showKnightMoves(piecePlacement);
+		}
 	}
 
 	// Gets user inputted chess piece
@@ -65,8 +70,8 @@ public class ChessHelper{
 
 		// Checks to see if inputted placement is permitted
 		if(piecePosition.length() == 2 && piecePosition.charAt(0) >= 97 
-				&& piecePosition.charAt(0) <= 104 && piecePosition.charAt(1) >= 1
-				&& piecePosition.charAt(1) <= 8){
+				&& piecePosition.charAt(0) <= 104 && piecePosition.charAt(1) >= 49
+				&& piecePosition.charAt(1) <= 56){
 			wrongPlace = false;
 		}
 
@@ -84,10 +89,6 @@ public class ChessHelper{
 				wrongPlace = false;
 			}
 		}
-
-
-		println("The " + piece + " is at square " + piecePosition);
-		println("From here you can move to:");
 
 		return piecePosition;
 	}
