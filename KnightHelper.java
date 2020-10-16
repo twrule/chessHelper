@@ -1,6 +1,5 @@
 public class KnightHelper{
-	// static Scanner sc = new Scanner(System.in);
-
+	// Moves the knight can make
 	static int[][] knightMoves = {	{-2, +1},
 									{-1, +2},
 									{+1, +2},
@@ -9,26 +8,64 @@ public class KnightHelper{
 									{+1, -2},
 									{-1, -2},
 									{-2, -1}  };
+	static int[][] pawnMoves = {	{+0, +1},
+									{+0, +2},};
+
 
 	public static void main(String[] args){
-		println("Welcome to the Knight Move calculator.\n");
+		println("Welcome to the Move calculator.\n");
 	}
 
-	public static void showKnightMoves(String piecePlacement){
+	public static void showMoves(String piecePlacement, String chessPiece){
 		int[][] board = new int[8][8];
 
 		String kSquare = piecePlacement;
 		Pos kPos = convertSquareToPos(kSquare);
 
-		// do{
-		// 	print("Enter the knight's position ");
-		// 	kSquare = sc.nextLine();
-		// 	kPos = convertSquareToPos(kSquare);
-		// } while (kPos == null);
-
 		board[kPos.x][kPos.y] = 1;
-		println("\nThe knight is at square " + convertPosToSquare(kPos));
-		println("From here the knight can move to:");
+		println("\nThe " + chessPiece + " is at square " + convertPosToSquare(kPos));
+		println("From here the " + chessPiece + " can move to:");
+
+		if(chessPiece.equalsIgnoreCase("Pawn")){
+			pawnMoveCalculator(board, kPos, chessPiece);
+		}
+		else if(chessPiece.equalsIgnoreCase("Knight")){
+			knightMoveCalculator(board, kPos, chessPiece);
+		}
+	}
+
+	public static void pawnMoveCalculator(int[][] board, Pos kPos, String chessPiece){
+		if(pawnMoves.length >= 1){
+			int pawnMoveCount = pawnMoves.length;
+			if(kPos.y != 1)
+				pawnMoveCount = 1;
+
+			for (int move = 0; move < pawnMoveCount; move++){
+				boolean lastCheck = (move == pawnMoveCount - 1);
+				int x, y;
+				x = pawnMoves[move][0];
+				y = pawnMoves[move][1];
+				Pos p = calculateNewPos(kPos, x, y);
+
+				if (p != null){
+					if(!lastCheck){
+						print(convertPosToSquare(p) + ", ");
+					}
+					else
+						print(convertPosToSquare(p));
+					board[p.x][p.y] = 2;
+				}
+			}
+			println("");
+			printBoard(board);
+
+			pawnMoves[1][1] = 2;
+		}
+		else
+			println("Nowhere.  You have no moves when you place your " + chessPiece + " here!");
+	}
+
+	public static void knightMoveCalculator(int[][] board, Pos kPos, String chessPiece){
 		if(knightMoves.length >= 1){
 			for (int move = 0; move < knightMoves.length; move++){
 				boolean lastCheck = (move == knightMoves.length - 1);
@@ -50,9 +87,10 @@ public class KnightHelper{
 			printBoard(board);
 		}
 		else
-			println("Nowhere.  You have no moves when you place your knight here!");
+			println("Nowhere.  You have no moves when you place your " + chessPiece + " here!");
 	}
 
+	// Converts squareLocation to xy coordinates
 	public static Pos convertSquareToPos(String square){
 		int x = -1;
 		int y = -1;
@@ -84,6 +122,7 @@ public class KnightHelper{
 			return new Pos(x, y);
 	}
 
+	// Converts xy coordinates to square coordinate location
 	public static String convertPosToSquare(Pos p){
 		String file = "";
 		if(p.x == 0) file = "a";
@@ -124,18 +163,7 @@ public class KnightHelper{
 		println("");
 	}
 
-	// public static boolean getYorN(String prompt){
-	// 	while(true){
-	// 		String answer;
-	// 		print("\n" + prompt + " (Y or N) ");
-	// 		answer = sc.nextLine();
 
-	// 		if(answer.equalsIgnoreCase("Y"))
-	// 			return true;
-	// 		else if(answer.equalsIgnoreCase("N"))
-	// 			return false;
-	// 	}
-	// }
 
 	public static void println(Object line){
 		System.out.println(line);
@@ -144,15 +172,4 @@ public class KnightHelper{
 		System.out.print(line);
 	}
 
-}
-
-
-class Pos{
-	public int x;
-	public int y;
-
-	public Pos(int x, int y){
-		this.x = x;
-		this.y = y;
-	}
 }

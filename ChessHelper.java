@@ -5,21 +5,45 @@ public class ChessHelper{
 	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args){
-		println("Welcome to your Chess Helper.\n");
+		println("\nWelcome to your Chess Helper.\n");
 		boolean continuePlaying = true;
 		String chessPiece;
 		String piecePlacement;
+		int playSamePiece = 1;
 
 		while(continuePlaying){
+			if(playSamePiece == 0){
+				playSamePiece = 1;
+			}
+			
 			chessPiece = getPiece();
 			piecePlacement = getPlacement(chessPiece);
 
-			if(chessPiece.equals("Knight")){
-				KnightHelper knightHelper = new KnightHelper();
-				knightHelper.showKnightMoves(piecePlacement);
+			if(chessPiece.equalsIgnoreCase("Pawn")){
+				while(playSamePiece == 1){
+					KnightHelper pawnHelper = new KnightHelper();
+					pawnHelper.showMoves(piecePlacement, chessPiece);
+					playSamePiece = askPlaySamePiece();
+					println("\n\n---------------------------------------\n\n");
+					if(playSamePiece == 1)
+						piecePlacement = repeatPlacement(chessPiece);
+				}
+			}
+			else if(chessPiece.equalsIgnoreCase("Knight")){
+				while(playSamePiece == 1){
+					KnightHelper knightHelper = new KnightHelper();
+					knightHelper.showMoves(piecePlacement, chessPiece);
+					playSamePiece = askPlaySamePiece();
+					println("\n\n---------------------------------------\n\n");	
+					if(playSamePiece == 1)
+						piecePlacement = repeatPlacement(chessPiece);
+				}	
 			}
 
-			continuePlaying = askPlayOn();
+			if(playSamePiece == 3)
+				continuePlaying = false;
+			else
+				continuePlaying = true;
 		}
 	}
 
@@ -58,6 +82,39 @@ public class ChessHelper{
 
 		return nextPiece;
 		
+	}
+
+	static String repeatPlacement(String piece){
+		Boolean wrongPlace = true;
+
+		print("Enter a new place to put your " + piece + ": ");
+		
+		String piecePosition = sc.nextLine();
+		println(" ");
+
+		// Checks to see if inputted placement is permitted
+		if(piecePosition.length() == 2 && piecePosition.charAt(0) >= 97 
+				&& piecePosition.charAt(0) <= 104 && piecePosition.charAt(1) >= 49
+				&& piecePosition.charAt(1) <= 56){
+			wrongPlace = false;
+		}
+
+		// Loop until placement is permitted
+		while(wrongPlace){
+			println("You cannot place your " + piece + " here. Please try again.");
+			print("Enter the " + piece + "\'s position: ");
+		
+			piecePosition = sc.nextLine();
+			println(" ");
+
+			if(piecePosition.length() == 2 && piecePosition.charAt(0) >= 97 
+					&& piecePosition.charAt(0) <= 104 && piecePosition.charAt(1) >= 49
+					&& piecePosition.charAt(1) <= 56){
+				wrongPlace = false;
+			}
+		}
+
+		return piecePosition;
 	}
 
 	// Gets user inputted piece placement
@@ -128,25 +185,25 @@ public class ChessHelper{
 		println("");
 	}
 
-	public static boolean askPlayOn(){
+	public static int askPlaySamePiece(){
 		String userAnswer;
-		print("Keep on Playing (Y or N): ");
+		print("Would you like to switch pieces (Y or N) or quit (Q): ");
 		userAnswer = sc.nextLine();
-		while(!(userAnswer.equalsIgnoreCase("Y") || userAnswer.equalsIgnoreCase("N"))){
+		while(!(userAnswer.equalsIgnoreCase("Y") || userAnswer.equalsIgnoreCase("N") || userAnswer.equalsIgnoreCase("Q"))){
 			println("\nInvalid input please try again.");
-			print("Keep on Playing (Y or N): ");
+			print("Play same piece or quit (Y or N of Q): ");
 			userAnswer = sc.nextLine();
 		}
 
 		println("");
 
 		if(userAnswer.equalsIgnoreCase("Y"))
-			return true;
+			return 0;
+		else if(userAnswer.equalsIgnoreCase("N"))
+			return 1;
 		else
-			return false;
-
+			return 3;
 	}
-
 
 
 
