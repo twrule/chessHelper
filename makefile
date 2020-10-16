@@ -5,7 +5,10 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-	ChessHelper.java 
+	ChessHelper.java \
+	KnightHelper.java \
+	Pos.java \
+	PieceMovements.java
 
 default: classes
 

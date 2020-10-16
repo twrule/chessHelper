@@ -1,16 +1,4 @@
 public class KnightHelper{
-	// Moves the knight can make
-	static int[][] knightMoves = {	{-2, +1},
-									{-1, +2},
-									{+1, +2},
-									{+2, +1},
-									{+2, -1},
-									{+1, -2},
-									{-1, -2},
-									{-2, -1}  };
-	static int[][] pawnMoves = {	{+0, +1},
-									{+0, +2},};
-
 
 	public static void main(String[] args){
 		println("Welcome to the Move calculator.\n");
@@ -24,54 +12,49 @@ public class KnightHelper{
 
 		board[kPos.x][kPos.y] = 1;
 		println("\nThe " + chessPiece + " is at square " + convertPosToSquare(kPos));
-		println("From here the " + chessPiece + " can move to:");
+		println("From here the " + chessPiece + " can move to any ? you see:");
 
-		if(chessPiece.equalsIgnoreCase("Pawn")){
-			pawnMoveCalculator(board, kPos, chessPiece);
-		}
-		else if(chessPiece.equalsIgnoreCase("Knight")){
-			knightMoveCalculator(board, kPos, chessPiece);
-		}
+		String tempPiece = chessPiece.toUpperCase();
+
+		moveCalculator(board, kPos, chessPiece);
 	}
 
-	public static void pawnMoveCalculator(int[][] board, Pos kPos, String chessPiece){
-		if(pawnMoves.length >= 1){
-			int pawnMoveCount = pawnMoves.length;
-			if(kPos.y != 1)
-				pawnMoveCount = 1;
+	public static void moveCalculator(int[][] board, Pos kPos, String chessPiece){
+		int[][] pieceMoves = { {0, 0} };
+		String tempPiece = chessPiece.toUpperCase();
+		int moveCount = 0;
 
-			for (int move = 0; move < pawnMoveCount; move++){
-				boolean lastCheck = (move == pawnMoveCount - 1);
+		switch(tempPiece){
+			case "PAWN":
+				pieceMoves = PieceMovements.pawnMoves;
+				break;
+			case "BISHOP":
+				pieceMoves = PieceMovements.bishopMoves;
+				break;
+			case "KNIGHT":
+				pieceMoves = PieceMovements.knightMoves;
+				break;
+			case "ROOK":
+				pieceMoves = PieceMovements.rookMoves;
+				break;
+			case "QUEEN":
+				pieceMoves = PieceMovements.queenMoves;
+				break;
+			case "KING":
+				pieceMoves = PieceMovements.kingMoves;
+				break;
+		};
+
+		moveCount = pieceMoves.length;
+		if(tempPiece.equals("PAWN") && kPos.y != 1)
+			moveCount = 1;
+
+		if(moveCount >= 1){
+			for (int move = 0; move < moveCount; move++){
+				boolean lastCheck = (move == moveCount - 1);
 				int x, y;
-				x = pawnMoves[move][0];
-				y = pawnMoves[move][1];
-				Pos p = calculateNewPos(kPos, x, y);
-
-				if (p != null){
-					if(!lastCheck){
-						print(convertPosToSquare(p) + ", ");
-					}
-					else
-						print(convertPosToSquare(p));
-					board[p.x][p.y] = 2;
-				}
-			}
-			println("");
-			printBoard(board);
-
-			pawnMoves[1][1] = 2;
-		}
-		else
-			println("Nowhere.  You have no moves when you place your " + chessPiece + " here!");
-	}
-
-	public static void knightMoveCalculator(int[][] board, Pos kPos, String chessPiece){
-		if(knightMoves.length >= 1){
-			for (int move = 0; move < knightMoves.length; move++){
-				boolean lastCheck = (move == knightMoves.length - 1);
-				int x, y;
-				x = knightMoves[move][0];
-				y = knightMoves[move][1];
+				x = pieceMoves[move][0];
+				y = pieceMoves[move][1];
 				Pos p = calculateNewPos(kPos, x, y);
 
 				if (p != null){
@@ -162,8 +145,6 @@ public class KnightHelper{
 		}
 		println("");
 	}
-
-
 
 	public static void println(Object line){
 		System.out.println(line);

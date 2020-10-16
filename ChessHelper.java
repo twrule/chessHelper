@@ -12,33 +12,23 @@ public class ChessHelper{
 		int playSamePiece = 1;
 
 		while(continuePlaying){
+			String tempPiece;
 			if(playSamePiece == 0){
 				playSamePiece = 1;
 			}
 			
 			chessPiece = getPiece();
 			piecePlacement = getPlacement(chessPiece);
+			tempPiece = chessPiece.toUpperCase();
 
-			if(chessPiece.equalsIgnoreCase("Pawn")){
-				while(playSamePiece == 1){
-					KnightHelper pawnHelper = new KnightHelper();
-					pawnHelper.showMoves(piecePlacement, chessPiece);
-					playSamePiece = askPlaySamePiece();
-					println("\n\n---------------------------------------\n\n");
-					if(playSamePiece == 1)
-						piecePlacement = repeatPlacement(chessPiece);
-				}
-			}
-			else if(chessPiece.equalsIgnoreCase("Knight")){
-				while(playSamePiece == 1){
-					KnightHelper knightHelper = new KnightHelper();
-					knightHelper.showMoves(piecePlacement, chessPiece);
-					playSamePiece = askPlaySamePiece();
-					println("\n\n---------------------------------------\n\n");	
-					if(playSamePiece == 1)
-						piecePlacement = repeatPlacement(chessPiece);
-				}	
-			}
+			while(playSamePiece == 1){
+				KnightHelper knightHelper = new KnightHelper();
+				knightHelper.showMoves(piecePlacement, chessPiece);
+				playSamePiece = askPlaySamePiece();
+				println("\n\n---------------------------------------\n\n");	
+				if(playSamePiece == 1)
+					piecePlacement = repeatPlacement(chessPiece);
+			}	
 
 			if(playSamePiece == 3)
 				continuePlaying = false;
@@ -191,7 +181,7 @@ public class ChessHelper{
 		userAnswer = sc.nextLine();
 		while(!(userAnswer.equalsIgnoreCase("Y") || userAnswer.equalsIgnoreCase("N") || userAnswer.equalsIgnoreCase("Q"))){
 			println("\nInvalid input please try again.");
-			print("Play same piece or quit (Y or N of Q): ");
+			print("Play same piece (Y or N) or quit (Q): ");
 			userAnswer = sc.nextLine();
 		}
 
