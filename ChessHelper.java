@@ -5,14 +5,21 @@ public class ChessHelper{
 	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args){
-		println("Welcome to the Knight Move calculator.\n");
-		
-		String chessPiece = getPiece();
-		String piecePlacement = getPlacement(chessPiece);
+		println("Welcome to your Chess Helper.\n");
+		boolean continuePlaying = true;
+		String chessPiece;
+		String piecePlacement;
 
-		if(chessPiece.equals("Knight")){
-			KnightHelper knightHelper = new KnightHelper();
-			knightHelper.showKnightMoves(piecePlacement);
+		while(continuePlaying){
+			chessPiece = getPiece();
+			piecePlacement = getPlacement(chessPiece);
+
+			if(chessPiece.equals("Knight")){
+				KnightHelper knightHelper = new KnightHelper();
+				knightHelper.showKnightMoves(piecePlacement);
+			}
+
+			continuePlaying = askPlayOn();
 		}
 	}
 
@@ -26,9 +33,9 @@ public class ChessHelper{
 		println("");
 
 		// Checks to see if requested piece is permitted
-		if(nextPiece.equals("Pawn") || nextPiece.equals("Bishop") || 
-				nextPiece.equals("Knight") || nextPiece.equals("Rook") ||
-				nextPiece.equals("Queen") || nextPiece.equals("King")){
+		if(nextPiece.equalsIgnoreCase("Pawn") || nextPiece.equalsIgnoreCase("Bishop") || 
+				nextPiece.equalsIgnoreCase("Knight") || nextPiece.equalsIgnoreCase("Rook") ||
+				nextPiece.equalsIgnoreCase("Queen") || nextPiece.equalsIgnoreCase("King")){
 			wrongPiece = false;
 		}
 
@@ -41,9 +48,9 @@ public class ChessHelper{
 			nextPiece = sc.nextLine();
 			println("");
 
-			if(nextPiece.equals("Pawn") || nextPiece.equals("Bishop") || 
-					nextPiece.equals("Knight") || nextPiece.equals("Rook") ||
-					nextPiece.equals("Queen") || nextPiece.equals("King")){
+			if(nextPiece.equalsIgnoreCase("Pawn") || nextPiece.equalsIgnoreCase("Bishop") || 
+					nextPiece.equalsIgnoreCase("Knight") || nextPiece.equalsIgnoreCase("Rook") ||
+					nextPiece.equalsIgnoreCase("Queen") || nextPiece.equalsIgnoreCase("King")){
 				wrongPiece = false;
 			}
 		}
@@ -119,6 +126,25 @@ public class ChessHelper{
 			println("|----|----|----|----|----|----|----|----|");
 		}
 		println("");
+	}
+
+	public static boolean askPlayOn(){
+		String userAnswer;
+		print("Keep on Playing (Y or N): ");
+		userAnswer = sc.nextLine();
+		while(!(userAnswer.equalsIgnoreCase("Y") || userAnswer.equalsIgnoreCase("N"))){
+			println("\nInvalid input please try again.");
+			print("Keep on Playing (Y or N): ");
+			userAnswer = sc.nextLine();
+		}
+
+		println("");
+
+		if(userAnswer.equalsIgnoreCase("Y"))
+			return true;
+		else
+			return false;
+
 	}
 
 

@@ -12,10 +12,6 @@ public class KnightHelper{
 
 	public static void main(String[] args){
 		println("Welcome to the Knight Move calculator.\n");
-		// do{
-		// 	showKnightMoves();
-		// }
-		// while(getYorN("Do it again?"));
 	}
 
 	public static void showKnightMoves(String piecePlacement){
