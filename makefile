@@ -16,7 +16,6 @@ classes: $(CLASSES:.java=.class)
 
 run: 
 	java ChessHelper
-	
 
 spotless:
 	$(RM) *.class
